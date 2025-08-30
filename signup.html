@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FemDetect - Signup">
+  <title>Sign Up - FemDetect</title>
+  <link rel="icon" href="images.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url("home3.jpg") no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 165, 0, 0.9);
+      color: #000;
+      font-weight: bold;
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+    header .title {
+      text-align: left;
+      color: #000;
+    }
+    header .right-buttons a {
+      margin-left: 20px;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    header .right-buttons a:hover {
+      color: #FF6F00;
+    }
+
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      padding-top: 100px; /* push down to avoid header overlap */
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.7); /* Black with transparency */
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .overlay h1 {
+      font-size: 3.5rem;
+      color: #FFA500;
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .signup-form {
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .signup-form input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #FFA500;
+      color: #FFA500;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+
+    .signup-form input::placeholder {
+      color: rgba(255, 165, 0, 0.7);
+    }
+
+    .signup-form button {
+      width: 100%;
+      padding: 10px;
+      background: #FFA500;
+      color: #000000;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .signup-form button:hover {
+      background: #e69500;
+    }
+
+    .login-link {
+      margin-top: 10px;
+      color: #FFA500;
+    }
+
+    .login-link a {
+      color: #FFC266;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header from Login Page -->
+  <header>
+    <div class="title">Smart PCOD/PCOS Detection System</div>
+    <div class="right-buttons">
+      <a href="landing.html">Home</a>
+      <a href="about.html">About Us</a>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="overlay">
+      <h1>Sign Up</h1>
+      <form class="signup-form">
+        <input type="text" id="username" placeholder="Username or Mail" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirmPassword" placeholder="Re-enter Password" required>
+        <input type="tel" id="phone" placeholder="Phone" required>
+        <button type="button" onclick="validateAndRedirect()">Sign Up</button>
+        
+        <p class="login-link">
+          Already have an account? <a href="2.html">Login</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function validateAndRedirect() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (username && password && confirmPassword && phone) {
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+        alert("Signup successful! Redirecting to Dashboard...");
+        location.href = 'dashboard.html';  // ✅ Changed from pd.html to dashboard.html
+      } else {
+        alert("Please fill in all fields.");
+      }
+    }
+  </script>
+
+</body>
+</html>

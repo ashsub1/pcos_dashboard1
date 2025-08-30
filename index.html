@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FEMDETECT</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+
+    /* Header */
+    header {
+      background: #FFA726; /* Orange color from your image */
+      color: white;
+      padding: 20px 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    header .container {
+      width: 90%;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { font-size: 24px; }
+    nav ul { list-style: none; display: flex; }
+    nav ul li { margin-left: 20px; }
+    nav ul li a { color: white; text-decoration: none; font-weight: bold; }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      background: url('home3.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content { position: relative; z-index: 1; margin-top: 40px; } /* Moved down */
+    .hero h2 { font-size: 48px; margin-bottom: 20px; }
+    .btn {
+      background: #FFA726; /* Same as header */
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: 0.3s;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .btn:hover { background: #fb8c00; }
+
+    /* Section with bg image */
+    .section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+    .section::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .section-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 20px;
+    }
+    .section h2 { font-size: 40px; margin-bottom: 20px; }
+
+    /* Backgrounds */
+    #about { background: url('login2.jpg') no-repeat center center/cover; }
+    #testimonials { background: url('sign3.jpg') no-repeat center center/cover; }
+
+    /* Footer */
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>FEMDETECT</h1>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h2>Empowering Women’s Health with AI</h2>
+      <p>Detection of PCOD/PCOS using Machine Learning</p>
+      <a href="2.html" class="btn">Login</a>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section class="section" id="about">
+    <div class="section-content">
+      <h2>About Us</h2>
+      <p>FEMDETECT is an AI-powered platform to assist in early detection of PCOD/PCOS,
+         helping women take charge of their health with timely insights and support.</p>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section" id="testimonials">
+    <div class="section-content">
+      <h2>What Women Say</h2>
+      <p>"FEMDETECT gave me the confidence to consult my doctor early. Truly a life saver!"</p>
+      <p>"Easy to use and very informative. Highly recommended!"</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <footer id="contact">
+    <p>Contact Us: info@femdetect.com | © 2025 FEMDETECT</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patient Dashboard</title>
+  <style>
+    :root{
+      --brand: #F8AE2B;
+      --brand-dark: #D9961C;
+      --sidebar-bg: rgba(47,64,80,0.9); /* slightly transparent sidebar */
+      --text-dark: #333;
+      --muted: #6b6b6b;
+      --card-bg: rgba(255,255,255,0.9); /* slightly transparent cards */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, sans-serif; }
+    body, html { 
+      height: 100%; 
+      overflow: hidden; 
+      color: var(--text-dark); 
+    }
+
+    /* Background image with 50% opacity overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background: url('img.jpg') no-repeat center center fixed;
+      background-size: cover;
+      opacity: 0.5; /* 50% visibility */
+      z-index: -1;
+    }
+
+    a { text-decoration: none; color: inherit; cursor: pointer; }
+
+    #sidebar { position: fixed; top:0; left:0; width:240px; height:100%; background: var(--sidebar-bg); color:#fff; display:flex; flex-direction:column; padding-top:60px; }
+    #sidebar .logo { font-size:1.6rem; font-weight:bold; padding:16px 20px; text-align:center; background:linear-gradient(90deg,var(--brand),var(--brand-dark)); position:fixed; top:0; width:240px; }
+    #sidebar ul { list-style:none; margin-top:20px; flex-grow:1; }
+    #sidebar ul li { padding:15px 20px; display:flex; align-items:center; gap:12px; cursor:pointer; }
+    #sidebar ul li:hover, #sidebar ul li.active { background:var(--brand); color:#fff; }
+
+    #header { position:fixed; top:0; left:240px; height:60px; width:calc(100% - 240px); background:#fff; display:flex; align-items:center; justify-content:flex-end; padding:0 20px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    #header .title { position:absolute; left:20px; font-weight:700; }
+    #header .user-info { display:flex; align-items:center; gap:15px; }
+    #header .logout-btn { padding:8px 14px; border:none; border-radius:6px; background:var(--brand); color:#fff; font-weight:bold; cursor:pointer; }
+    #header .logout-btn:hover { background:var(--brand-dark); }
+
+    #main-content { margin-left:240px; margin-top:60px; padding:20px; height:calc(100% - 60px); overflow-y:auto; }
+    h2 { margin-bottom:20px; color:#34495e; }
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .card { background: var(--card-bg); border-radius:8px; padding:25px; box-shadow:0 2px 6px rgba(0,0,0,0.1); transition:transform 0.2s ease; }
+    .card:hover { transform:translateY(-4px); }
+    .card h3 { margin-bottom:12px; color:var(--brand); }
+    button { background:var(--brand); color:#fff; border:none; border-radius:6px; padding:10px 16px; font-size:1rem; cursor:pointer; }
+    button:hover { background:var(--brand-dark); }
+
+    .centered { display:flex; justify-content:center; align-items:center; flex-direction:column; gap:15px; }
+
+    .payments-list { display:flex; flex-direction:column; gap:15px; }
+    .payment-card { background: var(--card-bg); border-radius:10px; padding:20px; text-align:left; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+
+    .appointment-form { margin-bottom:20px; }
+    .appointments-section { display:flex; flex-direction:column; gap:20px; }
+  </style>
+</head>
+<body>
+  <nav id="sidebar">
+    <div class="logo">FemDetect</div>
+    <ul>
+      <li class="active" data-section="home"><i>🏠</i><span>Dashboard</span></li>
+      <li data-section="profile"><i>👤</i><span>Profile</span></li>
+      <li data-section="appointments"><i>📅</i><span>Appointments</span></li>
+      <li data-section="pcod-test"><i>🧪</i><span>PCOD Test</span></li>
+      <li data-section="ultrasound"><i>🔬</i><span>Ultrasound Booking</span></li>
+      <li data-section="reports"><i>📄</i><span>Medical Reports</span></li>
+      <li data-section="messages"><i>✉️</i><span>Messages</span></li>
+      <li data-section="payments"><i>💳</i><span>Payments</span></li>
+      <li data-section="settings"><i>⚙️</i><span>Settings</span></li>
+    </ul>
+  </nav>
+
+  <header id="header">
+    <div class="title">Welcome, Jane Doe</div>
+    <div class="user-info">
+      <button class="logout-btn" onclick="window.location.href='2.html'">Logout</button>
+    </div>
+  </header>
+
+  <main id="main-content"></main>
+
+  <script>
+    const mainContent = document.getElementById("main-content");
+    const sidebarItems = document.querySelectorAll("#sidebar ul li");
+
+    let upcomingAppointments = [];
+    let previousAppointments = [
+      { date: "2025-07-20", doctor: "Dr. Smith", summary: "Prescribed Metformin" },
+      { date: "2025-06-15", doctor: "Dr. Lee", summary: "Suggested lifestyle changes" }
+    ];
+
+    function renderSection(section) {
+      switch(section) {
+        case "home":
+          mainContent.innerHTML = `
+            <h2>Dashboard</h2>
+            <div class="grid-2">
+              <div class="card">
+                <h3>PCOS / PCOD Detection</h3>
+                <p>Early detection test for polycystic ovary syndrome.</p>
+                <p>Basic fee: ₹100</p>
+                <button onclick="renderSection('pcod-test')">Start Test</button>
+              </div>
+              <div class="card">
+                <h3>Ultrasound Screening</h3>
+                <p>Book your ultrasound screening with expert radiologists.</p>
+                <p>Basic fee: ₹2000</p>
+                <button onclick="renderSection('ultrasound')">Book Now</button>
+              </div>
+            </div>
+            <br>
+            <div class="card">
+              <h3>Healthy Tip</h3>
+              <p>Stay hydrated and include at least 30 minutes of physical activity in your daily routine to improve hormonal balance.</p>
+            </div>
+          `;
+          break;
+
+        case "profile":
+          mainContent.innerHTML = `
+            <h2>Profile</h2>
+            <div class="centered">
+              <p><b>Name:</b> <span class="editable">Jane Doe</span></p>
+              <p><b>Age:</b> <span class="editable">28</span></p>
+              <p><b>Height:</b> <span class="editable">165 cm</span></p>
+              <p><b>Weight:</b> <span class="editable">60 kg</span></p>
+              <p><b>BMI:</b> <span class="editable">22.0</span></p>
+              <p><b>DOB:</b> <span class="editable">1996-01-01</span></p>
+              <p><b>Gender:</b> <span class="editable">Female</span></p>
+              <button id="editProfileBtn">Edit Profile</button>
+            </div>
+          `;
+
+          document.getElementById("editProfileBtn").onclick = function() {
+            const btn = this;
+            let spans = document.querySelectorAll(".editable");
+            if (btn.textContent === "Edit Profile") {
+              spans.forEach(span => {
+                const val = span.textContent;
+                span.outerHTML = `<input class="editable" value="${val}">`;
+              });
+              btn.textContent = "Save";
+            } else {
+              spans = document.querySelectorAll(".editable");
+              spans.forEach(input => {
+                const val = input.value;
+                input.outerHTML = `<span class="editable">${val}</span>`;
+              });
+              btn.textContent = "Edit Profile";
+            }
+          };
+          break;
+
+        case "appointments":
+          mainContent.innerHTML = `
+            <h2>Appointments</h2>
+            <div class="appointments-section">
+              <div class="card appointment-form">
+                <h3>Book Appointment</h3>
+                <label>Date: <input type="date" id="apptDate"></label><br><br>
+                <label>Time: <input type="time" id="apptTime"></label><br><br>
+                <label>Doctor: <input type="text" id="apptDoctor" placeholder="Doctor Name"></label><br><br>
+                <button onclick="bookAppointment()">Book</button>
+              </div>
+              <div class="card">
+                <h3>Upcoming Appointments</h3>
+                <div id="upcomingList">${upcomingAppointments.map(a=>`<p>${a.date} ${a.time} with ${a.doctor}</p>`).join('') || "No upcoming appointments"}</div>
+              </div>
+              <div class="card">
+                <h3>Previous Appointments</h3>
+                ${previousAppointments.map(a=>`<p>${a.date} with ${a.doctor} - ${a.summary}</p>`).join('')}
+              </div>
+            </div>
+          `;
+          break;
+
+        case "pcod-test":
+          mainContent.innerHTML = `
+            <h2>PCOD Test</h2>
+            <p>The PCOD test helps detect polycystic ovary syndrome.</p>
+            <button onclick="dummyRedirect('pcod')">Book & Pay</button>
+          `;
+          break;
+
+        case "ultrasound":
+          mainContent.innerHTML = `
+            <h2>Ultrasound Booking</h2>
+            <p>Book your ultrasound screening appointment.</p>
+            <button onclick="dummyRedirect('ultrasound')">Book & Pay</button>
+          `;
+          break;
+
+        case "payments":
+          mainContent.innerHTML = `
+            <h2>Payments</h2>
+            <div class="payments-list">
+              ${Array.from({length:10}, (_,i)=>`
+                <div class="payment-card">
+                  <h3>Payment #${i+1}</h3>
+                  <p>Amount: $${(i+1)*10}</p>
+                  <p>Status: Successful</p>
+                  <p>Date: 2025-08-${10+i}</p>
+                </div>`).join('')}
+            </div>
+          `;
+          break;
+
+        case "messages":
+          mainContent.innerHTML = `
+            <h2>Messages</h2>
+            <div class="card">
+              <h3>Inbox</h3>
+              <div class="messages-list">
+                <p><b>Dr. Smith:</b> Please remember to take your medication on time.</p>
+                <p><b>Clinic:</b> Your ultrasound report is ready for download.</p>
+                <p><b>Dr. Lee:</b> Don’t forget your follow-up appointment next week.</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Send a Message</h3>
+              <textarea id="messageBox" rows="4" style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;"></textarea><br><br>
+              <button onclick="sendMessage()">Send</button>
+            </div>
+          `;
+          break;
+
+        case "reports":
+          mainContent.innerHTML = `
+            <h2>Medical Reports</h2>
+            <div class="card">
+              <h3>PCOS / PCOD Test Report</h3>
+              <p><b>Date:</b> 2025-07-20</p>
+              <p><b>Result:</b> Mild PCOS detected</p>
+              <p><b>Doctor’s Notes:</b> Recommended lifestyle changes and follow-up in 3 months.</p>
+            </div>
+            <br>
+            <div class="card">
+              <h3>Ultrasound Report</h3>
+              <p><b>Date:</b> 2025-06-15</p>
+              <p><b>Result:</b> Normal uterus and ovaries, no cysts detected.</p>
+              <p><b>Doctor’s Notes:</b> No abnormalities found, routine checkup suggested.</p>
+            </div>
+          `;
+          break;
+
+        case "settings":
+          mainContent.innerHTML = `
+            <h2>Settings</h2>
+            <div class="card">
+              <h3>Account Settings</h3>
+              <label>Email: <input type="email" value="jane.doe@example.com" style="margin:5px 0;padding:6px;border-radius:6px;border:1px solid #ccc;"></label><br><br>
+              <label>Password: <input type="password" value="********" style="margin:5px 0;padding:6px;border-radius:6px;border:1px solid #ccc;"></label><br><br>
+              <button onclick="alert('Settings saved!')">Save Changes</button>
+            </div>
+            <br>
+            <div class="card">
+              <h3>Preferences</h3>
+              <label><input type="checkbox" checked> Receive Email Notifications</label><br>
+              <label><input type="checkbox"> Receive SMS Alerts</label><br>
+              <label><input type="checkbox" checked> Enable Dark Mode</label><br><br>
+              <button onclick="alert('Preferences updated!')">Update Preferences</button>
+            </div>
+          `;
+          break;
+
+        default:
+          mainContent.innerHTML = `<h2>${section}</h2><p>Content coming soon...</p>`;
+      }
+    }
+
+    function bookAppointment() {
+      const date = document.getElementById("apptDate").value;
+      const time = document.getElementById("apptTime").value;
+      const doctor = document.getElementById("apptDoctor").value;
+      if (date && time && doctor) {
+        upcomingAppointments.push({ date, time, doctor });
+        alert("Appointment booked!");
+        renderSection("appointments");
+      } else {
+        alert("Please fill all fields!");
+      }
+    }
+
+    function dummyRedirect(type) {
+      mainContent.innerHTML = `
+        <h2>Payment Successful ✅</h2>
+        <p>Redirecting to ${type === 'pcod' ? 'PCOD Test' : 'Ultrasound'} portal...</p>
+      `;
+      setTimeout(()=>{
+        if (type === "pcod") {
+          window.location.href = "https://huggingface.co/spaces/ashsub/femdetect_hms";
+        } else {
+          window.location.href = "https://huggingface.co/spaces/ashsub/project_demo";
+        }
+      }, 2000);
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById("messageBox").value;
+      if(msg.trim() !== "") {
+        alert("Message sent: " + msg);
+        document.getElementById("messageBox").value = "";
+      } else {
+        alert("Please type a message before sending!");
+      }
+    }
+
+    sidebarItems.forEach(item => {
+      item.addEventListener("click", () => {
+        sidebarItems.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        renderSection(item.getAttribute("data-section"));
+      });
+    });
+
+    renderSection("home");
+  </script>
+</body>
+</html>
